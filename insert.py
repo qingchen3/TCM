@@ -30,37 +30,25 @@ if __name__ == '__main__':
     maxL = maximumLabelingL(L, N)
     # res = BFSL(L, N, 1)
     end = time.time()
-    print("build max Labeling takes ", end - start, ' seconds.')
+    print("building maximum labeling takes ", end - start, ' seconds.')
 
     count = 0
     trials = 10
     T = 0
     for i in range(N):
-        maxNum = max(trials, len(L[i]))
-        if maxNum <= trials:
-            for j in L[i]:
+        t = 0
+        neighbors = L[i].copy()
+        while t < trials:
+            j = random.randint(0, N)
+            if j not in neighbors and j in L:
+                t += 1
                 count += 1
                 start = time.time()
-                deleteL(L, maxL, N, i, j)
+                insertL(L, maxL, i, j)
                 T += (time.time() - start)
-                L[i].add(j)
-                if count % 100 == 0:
-                    print(count, T / count)
-        else:
-            candidates = set()
-            for c in L[i]:
-                candidates.add(c)
-            for _ in range(trials):
-                t_index = random.randint(0, len(candidates) - 1)
-                candidates_list = list(candidates)
-                t = candidates_list[t_index]
-                candidates.remove(t)
-                count += 1
-                start = time.time()
-                deleteL(L, maxL, N, i, t)
-                T += (time.time() - start)
-                L[i].add(t)
+                neighbors.add(j)
+                #deleteL(L, maxL, N, i, j)
                 if count % 100 == 0:
                     print(count, T / count)
 
-    print(count, T / count)
+
