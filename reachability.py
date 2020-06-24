@@ -59,6 +59,8 @@ def maximumLabelingM(M):
     for i in range(N):
         res = bfsm(M, i)
         for lo in res:
+            if i == lo:
+                continue
             maxL[i]['out'].add(lo)
             maxL[lo]['in'].add(i)
     return maxL
